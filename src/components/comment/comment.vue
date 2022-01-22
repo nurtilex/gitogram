@@ -1,16 +1,22 @@
 <template>
   <div class="comment">
-    <span class="author">{{ author }}</span
-    ><span class="body">{{ body }}</span>
+    <span class="author">{{ author }}</span>
+    <span class="body">{{ body }}</span>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'CommentsItem',
+  name: 'comment',
   props: {
-    author: String,
-    body: String,
+    author: {
+      type: String,
+      required: true,
+    },
+    body: {
+      type: String,
+      required: true,
+    },
   },
 };
 </script>
@@ -24,7 +30,6 @@ export default {
   width: 100%;
   height: 1.8rem;
 }
-
 .author {
   font-weight: bold;
 }

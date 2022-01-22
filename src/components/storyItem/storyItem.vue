@@ -1,22 +1,25 @@
 <template>
   <div class="story-item">
-    <img :src="path" alt="user image" :class="classes" />
-
-    <span class="name">{{ username }}</span>
+    <div class="icon">
+      <img :src="icon" alt="user icon" />
+    </div>
+    <span>{{ name }}</span>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'StoryItem',
+  name: 'storyItem',
   props: {
-    username: String,
-    path: String,
-    isNew: Boolean,
+    name: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
-    classes() {
-      return this.isNew ? 'img new' : 'img';
+    icon() {
+      const val = require(`../../assets/user-${this.name.toLowerCase()}.svg`);
+      return val;
     },
   },
 };
@@ -35,19 +38,18 @@ export default {
 .story-item:hover {
   cursor: pointer;
 }
-.img {
+.story-item .icon {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  outline: 2px solid rgb(190, 185, 185);
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  padding: 0.2rem;
-}
-
-.new {
   outline: 2px solid #a6328d;
+}
+.icon img {
+  width: 60px;
+  height: 60px;
 }
 </style>
