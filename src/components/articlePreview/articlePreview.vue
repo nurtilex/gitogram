@@ -1,9 +1,11 @@
 <template>
-  <a class="post__article" :href="link">
+  <a class="post__article" :href="data.link">
     <div class="post__title">{{ data.title }}</div>
-    <div class="post__subtitle">{{ data.subtitle }}</div>
+    <div class="post__subtitle">
+      {{ data.subtitle || 'Default description' }}
+    </div>
     <!-- /* Контроллеры публикации */ -->
-    <postControllers :starsAmount="146" :forkAmount="4" />
+    <postControllers :starsAmount="data.stars" :forkAmount="data.forks" />
   </a>
 </template>
 

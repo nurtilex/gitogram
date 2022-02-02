@@ -5,7 +5,7 @@
         <img src="../../assets/star.svg" alt="star icon" />
         <span>Star</span>
       </button>
-      <span class="stars__value">{{ starsAmount }}k</span>
+      <span class="stars__value">{{ starsAmount }}</span>
     </div>
     <div class="fork">
       <button class="fork__button" type="button">

@@ -33,7 +33,8 @@ export default {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 6rem;
+  gap: 0.2rem;
+  width: 7rem;
   border: none;
   background: none;
   cursor: pointer;

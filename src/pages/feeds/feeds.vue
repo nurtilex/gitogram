@@ -7,20 +7,16 @@
 
       <template #content>
         <ul class="stories-list">
-          <li
-            class="stories-list__item"
-            v-for="{ name, isNew, id } in users"
-            :key="id"
-          >
-            <storyItem :name="name" :isNew="isNew" />
+          <li class="stories-list__item" v-for="user in users" :key="user.id">
+            <storyItem :name="user.name" />
           </li>
         </ul>
       </template>
     </topline>
     <section class="main">
-      <post v-for="post in posts" :key="post.id" :data="post">
+      <post v-for="item in items" :key="item.id" :data="item">
         <template #default>
-          <articlePreview :data="post" />
+          <articlePreview :data="item" />
         </template>
       </post>
     </section>
@@ -33,8 +29,9 @@ import storyItem from '../../components/storyItem/storyItem.vue';
 import post from '../../components/post/post.vue';
 import articlePreview from '../../components/articlePreview/articlePreview.vue';
 
+import * as api from '../../api';
+
 import { default as store } from '../../data';
-console.log(store.users);
 
 export default {
   name: 'feeds',
@@ -42,8 +39,43 @@ export default {
   data() {
     return {
       users: store.users,
-      posts: store.posts,
+      items: [],
     };
+  },
+  async created() {
+    try {
+      const { data } = await api.trandings.getTrandings();
+      this.items = data.items.map((item) => {
+        return {
+          nickname: item.owner.login,
+          id: item.id,
+          title: item.name,
+          username: 'John',
+          stars: item.stargazers_count,
+          forks: item.watchers_count,
+          subtitle: item.description,
+          comments: [
+            {
+              nickname: 'joshua_l',
+              body: "Enable performance measuring in production, at the user's request",
+              id: 0,
+            },
+            {
+              nickname: 'Camille',
+              body: "It's Impossible to Rename an Inherited Slot",
+              id: 1,
+            },
+            {
+              nickname: 'Marselle',
+              body: 'transition-group with flex parent causes removed items to fly',
+              id: 2,
+            },
+          ],
+        };
+      });
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 </script>
