@@ -4,7 +4,6 @@
   </a>
 </template>
 
-
 <script>
 export default {
   name: 'logo',
@@ -15,4 +14,3 @@ export default {
   color: red;
 }
 </style>
-

@@ -7,14 +7,22 @@
 
       <template #content>
         <ul class="stories-list">
-          <li class="stories-list__item" v-for="user in users" :key="user.id">
-            <storyItem :name="user.name" />
+          <li
+            class="stories-list__item"
+            v-for="({ id, login, avatarURL }, i) in formateObjects(trendings)"
+            :key="id"
+          >
+            <storyItem :name="login" :avatarLink="avatarURL" :id="i" />
           </li>
         </ul>
       </template>
     </topline>
     <section class="main">
-      <post v-for="item in items" :key="item.id" :data="item">
+      <post
+        v-for="item in formateObjects(trendings)"
+        :key="item.id"
+        :data="item"
+      >
         <template #default>
           <articlePreview :data="item" />
         </template>
@@ -25,57 +33,60 @@
 <script>
 import topline from '../../components/topline/topline.vue';
 import headline from '../../components/headline/headline.vue';
-import storyItem from '../../components/storyItem/storyItem.vue';
 import post from '../../components/post/post.vue';
 import articlePreview from '../../components/articlePreview/articlePreview.vue';
+import storyItem from '../../components/storyItem/storyItem.vue';
 
-import * as api from '../../api';
-
-import { default as store } from '../../data';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'feeds',
   components: { headline, topline, storyItem, post, articlePreview },
-  data() {
-    return {
-      users: store.users,
-      items: [],
-    };
+  methods: {
+    ...mapActions({ fetchTrendings: 'trendings/fetchTrendings' }),
+    formateObjects(arr) {
+      return arr.map((item) => ({
+        id: item.id,
+        login: item.owner.login,
+        title: item.name,
+        avatarURL: item.owner.avatar_url,
+        starsCount: item.stargazers_count,
+        forksCount: item.watchers_count,
+        description: item.description,
+        comments: [
+          {
+            nickname: 'joshua_l',
+            body: "Enable performance measuring in production, at the user's request",
+            id: 0,
+          },
+          {
+            nickname: 'Camille',
+            body: "It's Impossible to Rename an Inherited Slot",
+            id: 1,
+          },
+          {
+            nickname: 'Marselle',
+            body: 'transition-group with flex parent causes removed items to fly',
+            id: 2,
+          },
+        ],
+        body: [
+          'The easiest way to get .NET 6 Preview 4 is to install the maui-check dotnet tool from CLI and follow the instructions.',
+          `For running on Mac you'll currently use your favorite text editor and terminal to edit and run apps. We expect Visual Studio for Mac .NET 6 support to begin arriving mid-year.`,
+          'In Preview 4 we enable push/pop navigation with NavigationPage. We added a concrete implementation of IWindow, and completed porting ContentPage from Xamarin.Forms',
+          `For running on Mac you'll currently use your favorite text editor and terminal to edit and run apps. We expect Visual Studio for Mac .NET 6 support to begin arriving mid-year.`,
+        ],
+        date: '15 MAY',
+      }));
+    },
+  },
+  computed: {
+    ...mapState({
+      trendings: (state) => state.trendings.data,
+    }),
   },
   async created() {
-    try {
-      const { data } = await api.trandings.getTrandings();
-      this.items = data.items.map((item) => {
-        return {
-          nickname: item.owner.login,
-          id: item.id,
-          title: item.name,
-          username: 'John',
-          stars: item.stargazers_count,
-          forks: item.watchers_count,
-          subtitle: item.description,
-          comments: [
-            {
-              nickname: 'joshua_l',
-              body: "Enable performance measuring in production, at the user's request",
-              id: 0,
-            },
-            {
-              nickname: 'Camille',
-              body: "It's Impossible to Rename an Inherited Slot",
-              id: 1,
-            },
-            {
-              nickname: 'Marselle',
-              body: 'transition-group with flex parent causes removed items to fly',
-              id: 2,
-            },
-          ],
-        };
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    await this.fetchTrendings();
   },
 };
 </script>
@@ -85,7 +96,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
   width: 100%;
 }
 
@@ -99,12 +109,10 @@ export default {
 .stories-list {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 1.7rem;
   width: 100%;
   padding: 0 1rem;
-  overflow: hidden;
 }
 .stories-list__item {
   display: flex;
@@ -120,5 +128,7 @@ export default {
   gap: 2.5rem;
   align-items: center;
   width: 100%;
+  background-color: #fff;
+  padding-top: 2rem;
 }
 </style>

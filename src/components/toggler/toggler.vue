@@ -2,7 +2,7 @@
   <button type="button" class="toggler" @click="toggleValue">
     <span class="button_text">{{ currentText }}</span>
     <span :class="['button__icon', { active: isOpened }]">
-      <img src="../../assets/arrow-down.svg" alt="arrow" />
+      <img src="../../assets/arrow-icon.svg" alt="arrow" />
     </span>
   </button>
 </template>

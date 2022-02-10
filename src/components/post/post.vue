@@ -1,17 +1,17 @@
 <template>
   <div class="post">
     <!-- Компонент автора поста -->
-    <userButton :username="data.username" :nickname="data.nickname" link="#" />
+    <userButton :avatarLink="data.avatarURL" :nickname="data.login" link="#" />
     <!-- Слот для ссылки на публикацию с общей информацией -->
     <slot name="default"></slot>
     <!-- // Toggler -->
-    <toggler @onToggle="toggle"/>
+    <toggler @onToggle="toggle" />
     <!-- // Блок с комментариями -->
     <div class="post__comments" v-if="shown">
       <comment
         v-for="comment in data.comments"
         :key="comment.id"
-        :author="comment.nickname"
+        :author="comment.login"
         :body="comment.body"
       />
     </div>

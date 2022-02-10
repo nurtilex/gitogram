@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ active }" class="progress-bar">
+  <div :class="{ active: isActive }" class="progress-bar">
     <div ref="indicator" class="indicator"></div>
   </div>
 </template>
@@ -7,21 +7,24 @@
 <script>
 export default {
   name: 'progressBar',
+  emits: ['onFinish'],
+  props: { active: { type: Boolean, required: true } },
   data() {
     return {
-      active: false,
+      isActive: false,
     };
   },
-  emits: ['onFinish'],
   methods: {
     emitOnFinish() {
-      this.$emit('onFinish');
+      this.$emit('onFinish', 1);
+      console.log('onFinishEmit');
     },
   },
   mounted() {
-    this.$nextTick(() => {
-      this.active = true;
-    });
+    const vm = this;
+    setTimeout(function () {
+      if (vm.$props.active) vm.isActive = true;
+    }, 0);
 
     this.$refs.indicator.addEventListener('transitionend', this.emitOnFinish);
   },
@@ -30,25 +33,27 @@ export default {
       'transitionend',
       this.emitOnFinish
     );
+    this.$refs.indicator.sty;
   },
 };
 </script>
 
 <style scoped>
 .progress-bar {
-  width: 85%;
-  height: 0.3rem;
+  width: 95%;
+  height: 3px;
   position: relative;
   background-color: #31ae544d;
   border-radius: 5px;
 }
-.progress-bar.active .indicator {
+.progress-bar.active > .indicator {
   width: 100%;
 }
 .indicator {
   position: absolute;
   top: 0;
-  left: 0%;
+  left: 0;
+  bottom: 0;
   height: 100%;
   width: 0;
   background-color: #31ae54;

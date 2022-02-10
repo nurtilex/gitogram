@@ -1,15 +1,16 @@
 <template>
-  <feeds />
+  <router-view />
+  <!-- <feeds /> -->
 </template>
 
 <script>
-import feeds from './pages/feeds/feeds.vue';
+// import feeds from './pages/feeds/feeds.vue';
 
 export default {
   name: 'App',
-  components: {
-    feeds,
-  },
+  // components: {
+  //   feeds,
+  // },
 };
 </script>
 
@@ -18,16 +19,19 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Inter, sans-serif;
 }
+
 body {
   background: #fafafa;
+
 }
 #app {
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
   width: 100%;
-  padding: 1rem;
+  /* padding: 1rem; */
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

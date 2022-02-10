@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'button',
+  name: 'xButton',
   props: {
     text: {
       type: String,
@@ -38,7 +38,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 12rem;
+  width: 14rem;
   height: 2.5rem;
   color: #fff;
   border: none;

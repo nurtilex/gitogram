@@ -2,10 +2,10 @@
   <a class="post__article" :href="data.link">
     <div class="post__title">{{ data.title }}</div>
     <div class="post__subtitle">
-      {{ data.subtitle || 'Default description' }}
+      {{ data.description || 'Default description' }}
     </div>
     <!-- /* Контроллеры публикации */ -->
-    <postControllers :starsAmount="data.stars" :forkAmount="data.forks" />
+    <postControllers :starsAmount="data.starsCount" :forkAmount="data.forksCount" />
   </a>
 </template>
 

@@ -1,0 +1,124 @@
+.slider-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 34rem;
+  min-width: 20rem;
+  max-width: 20rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.not-active {
+  transform: scale(0.8);
+}
+
+.button-move {
+  position: absolute;
+
+  display: block;
+  width: 40px;
+  height: 40px;
+  background: #fff url('../../assets//button-move.svg') center no-repeat;
+  border-radius: 50%;
+  border: 2px solid #000;
+}
+
+.button-move:hover {
+  cursor: pointer;
+}
+
+.button-move.button--prev {
+  top: 50%;
+  left: -3.5rem;
+}
+.button-move.button--next {
+  top: 50%;
+  right: -3.5rem;
+  transform: rotate(180deg);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: 14%;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.025);
+}
+.progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  width: 100%;
+  padding: 0.1rem;
+}
+
+.active {
+  height: 34rem;
+  min-width: 20rem;
+}
+
+.content {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+  overflow: hidden;
+  padding: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  color: #000;
+  text-align: left;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-color: #afafaf;
+  scrollbar-width: thin;
+}
+.body::-webkit-scrollbar {
+  width: 5px;
+  margin-right: 5px;
+}
+
+.body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background-color: #afafaf;
+  border-radius: 5px;
+}
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.placeholder {
+  width: 100%;
+  height: 100%;
+}
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 15%;
+  background-color: rgba(0, 0, 0, 0.027);
+}

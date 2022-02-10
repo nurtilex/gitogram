@@ -44,7 +44,7 @@ export default {
   align-items: center;
   padding: 0 1rem;
   height: 30%;
-  width: 80%;
+  width: 75%;
 }
 .list {
   display: flex;

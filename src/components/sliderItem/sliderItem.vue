@@ -1,89 +1,91 @@
 <template>
-  <div class="slider-item">
-    <proggresBar />
-
-    <div class="user-button">
-      <userButton :username="data.username" :nickname="data.title" />
+  <div :class="sliderStyles">
+    <div
+      v-if="showLeftButton"
+      class="button-move button--prev"
+      @click="moveSlide('prev')"
+    ></div>
+    <div class="header">
+      <div class="progress">
+        <progressBar
+          :active="data.active"
+          @on-finish="this.$emit('moveSlide', 'next')"
+        />
+      </div>
+      <div class="user">
+        <userButton :avatarLink="data.avatarURL" :nickname="data.login" />
+      </div>
     </div>
-    <hr class="hr" />
-    <div class="slider-item__img"></div>
-    <div class="slider-item__text">
-      <span class="strong">Lorem Ipsum</span> is simply dummy text of the
-      printing and typesetting industry. Lorem Ipsum has been the industry's
-      standard dummy text ever since the 1500s, when an unknown printer took a
-      galley of type and scrambled it to make a type specimen book. It has
-      survived not only five centuries, but also the leap into electronic
-      typesetting, remaining essentially unchanged. It was popularised in the
-      1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-      and more recently with desktop publishing software like Aldus PageMaker
-      including versions of Lorem Ipsum.
+    <div class="content">
+      <div v-if="data.loading" class="loader">
+        <spinner />
+      </div>
+      <div
+        v-else-if="data.content !== undefined"
+        class="body"
+        v-html="data.content"
+      ></div>
+      <div v-else class="placeholder">
+        <sliderPlaceholder />
+      </div>
     </div>
-    <hr class="hr" />
-    <div class="button-wrapper">
-      <x-button text="Follow" hoverText="Unfollow" />
+    <div class="footer">
+      <div class="button">
+        <xButton text="Follow" hoverText="Unfollow" />
+      </div>
     </div>
+    <div
+      v-if="showRightButton"
+      class="button-move button--next"
+      @click="moveSlide('next')"
+    ></div>
   </div>
 </template>
 
 <script>
 import userButton from '../userButton/userButton.vue';
 import progressBar from '../progressBar/progressBar.vue';
-import button from '../button/button.vue';
+import spinner from '../spinner/spinner.vue';
+import xButton from '../button/button.vue';
+import sliderPlaceholder from '../sliderPlaceholder/sliderPlaceholder.vue';
 
 export default {
   name: 'sliderItem',
-  components: { userButton, progressBar, xButton: button },
+  emits: ['moveSlide'],
+  components: {
+    progressBar,
+    userButton,
+    xButton,
+    spinner,
+    sliderPlaceholder,
+  },
+
   props: {
     data: {
       type: Object,
       required: true,
-      /* Сделать валидатор для пропса */
+      default: () => ({}),
+    },
+  },
+  methods: {
+    moveSlide(direction) {
+      this.$emit('moveSlide', direction);
+    },
+  },
+  computed: {
+    showLeftButton() {
+      return this.data.active && !this.data.isLeft && this.data.showButtons;
+    },
+    showRightButton() {
+      return this.data.active && !this.data.isRight && this.data.showButtons;
+    },
+    sliderStyles() {
+      return { 'slider-item': true, 'not-active': !this.data.active };
     },
   },
 };
 </script>
 
 <style scoped>
-.strong {
-  font-weight: bold;
-}
-.slider-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  align-content: center;
-  width: 20rem;
-  height: 30rem;
-  padding-bottom: 1rem;
-  background-color: #fff;
-  border: 1px solid #000;
-  border-radius: 10px;
-}
-
-.slider-item__img {
-  background: url('../../assets/bg-phones.png') center no-repeat;
-  background-size: cover;
-  /* object-fit: cover; */
-  width: 80%;
-  height: 6rem;
-  margin: 0 10%;
-}
-.slider-item__text {
-  font-size: 14px;
-}
-.hr {
-  width: 100%;
-}
-
-.button-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-.progress-bar,
-.user-button,
-.slider-item__text {
-  padding: 0 1rem;
-}
+@import './sliderItem.css';
 </style>
