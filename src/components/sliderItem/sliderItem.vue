@@ -32,8 +32,7 @@
     <div class="footer">
       <div class="button">
         <xButton
-          text="Follow"
-          hoverText="Unfollow"
+          :text="isStarred ? 'Unfollow' : 'Follow'"
           @click="handleButtonClick"
         />
       </div>
@@ -76,15 +75,23 @@ export default {
   methods: {
     ...mapActions({
       likeRepo: 'user/likeRepo',
+      dislikeRepo: 'user/dislikeRepo',
     }),
     moveSlide(direction) {
       this.$emit('moveSlide', direction);
     },
     handleButtonClick() {
-      this.likeRepo({
-        owner: this.$props.data.login,
-        repo: this.$props.data.title,
-      });
+      if (this.isStarred) {
+        this.dislikeRepo({
+          owner: this.$props.data.login,
+          repo: this.$props.data.title,
+        });
+      } else {
+        this.likeRepo({
+          owner: this.$props.data.login,
+          repo: this.$props.data.title,
+        });
+      }
     },
   },
   computed: {
@@ -96,6 +103,9 @@ export default {
     },
     sliderStyles() {
       return { 'slider-item': true, 'not-active': !this.data.active };
+    },
+    isStarred() {
+      return this.$props.data.isRepoStarredByMe;
     },
   },
 };

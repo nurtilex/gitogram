@@ -7,12 +7,12 @@
     <!-- // Toggler -->
     <toggler @onToggle="toggle" />
     <!-- // Блок с комментариями -->
-    <div class="post__comments" v-if="shown">
+    <div class="post__comments">
       <div class="loading" v-if="isLoading">
         <spinner />
       </div>
 
-      <div class="comments" v-else-if="!isLoading">
+      <div class="comments" v-else-if="shown">
         <comment
           v-for="comment in getIssuesOfRepo({ id: data.id })"
           :key="comment.id"
@@ -53,15 +53,20 @@ export default {
   },
   methods: {
     async toggle(isOpened) {
+      const hasIssues = !!this.getIssuesOfRepo({ id: this.$props.data.id });
       try {
-        this.isLoading = true;
-        const { login: owner, title: repo, id } = this.data;
-        await this.fetchIssues({ owner, repo, id });
+        if (isOpened) {
+          this.isLoading = true;
+        }
+        if (!hasIssues) {
+          const { login: owner, title: repo, id } = this.data;
+          await this.fetchIssues({ owner, repo, id });
+        }
       } catch (e) {
         console.log(e);
       } finally {
+        this.isLoading = false;
         this.shown = isOpened;
-        this.isLoading = false
       }
     },
     ...mapActions({

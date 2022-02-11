@@ -18,6 +18,7 @@ export default {
         const repo = state.repos.find((r) => r.id === id);
         return repo.issues || null;
       },
+    getAllId: (state) => state.repos.map((r) => r.id),
   },
   actions: {
     async fetchUser(store) {
@@ -54,19 +55,19 @@ export default {
         console.log(e);
       }
     },
-    async likeRepo(store, { owner, repo }) {
+    async likeRepo({ dispatch }, { owner, repo }) {
       try {
         const { status } = await likeRepo({ owner, repo });
         console.log(status);
-        await store.actions.fetchRepos();
+        await dispatch('fetchRepos');
       } catch (e) {
         console.log(e);
       }
     },
-    async dislikeRepo(store, { owner, repo }) {
+    async dislikeRepo({ dispatch }, { owner, repo }) {
       try {
         await dislikeRepo({ owner, repo });
-        await store.actions.fetchRepos();
+        await dispatch('fetchRepos');
       } catch (e) {
         console.log(e);
       }

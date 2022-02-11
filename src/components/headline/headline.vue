@@ -34,12 +34,7 @@ export default {
   components: {
     logo,
   },
-  props: {
-    avatar_url: {
-      type: String,
-      required: true,
-    },
-  },
+  props: ['avatar_url'],
 };
 </script>
 

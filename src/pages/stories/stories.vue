@@ -26,7 +26,7 @@
 
 <script>
 import sliderItem from '../../components/sliderItem/sliderItem.vue';
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 
 export default {
   name: 'stories',
@@ -76,34 +76,8 @@ export default {
         login: item.owner.login,
         title: item.name,
         avatarURL: item.owner.avatar_url,
-        starsCount: item.stargazers_count,
-        forksCount: item.watchers_count,
-        description: item.description,
         content: item.readme,
-        comments: [
-          {
-            nickname: 'joshua_l',
-            body: "Enable performance measuring in production, at the user's request",
-            id: 0,
-          },
-          {
-            nickname: 'Camille',
-            body: "It's Impossible to Rename an Inherited Slot",
-            id: 1,
-          },
-          {
-            nickname: 'Marselle',
-            body: 'transition-group with flex parent causes removed items to fly',
-            id: 2,
-          },
-        ],
-        body: [
-          'The easiest way to get .NET 6 Preview 4 is to install the maui-check dotnet tool from CLI and follow the instructions.',
-          `For running on Mac you'll currently use your favorite text editor and terminal to edit and run apps. We expect Visual Studio for Mac .NET 6 support to begin arriving mid-year.`,
-          'In Preview 4 we enable push/pop navigation with NavigationPage. We added a concrete implementation of IWindow, and completed porting ContentPage from Xamarin.Forms',
-          `For running on Mac you'll currently use your favorite text editor and terminal to edit and run apps. We expect Visual Studio for Mac .NET 6 support to begin arriving mid-year.`,
-        ],
-        date: '15 MAY',
+        isRepoStarredByMe: this.idList.includes(item.id),
         active: i === this.currentSlide,
         loading: i === this.currentSlide && this.isLoading,
         showButtons: this.showButtons,
@@ -116,6 +90,9 @@ export default {
     ...mapState({
       trendings: (state) => state.trendings.data,
       currentSlide: (state) => state.trendings.currentSlide,
+    }),
+    ...mapGetters({
+      idList: 'user/getAllId',
     }),
   },
   async created() {

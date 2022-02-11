@@ -1,6 +1,6 @@
 <template>
-  <button class="button" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
-    {{ currentText }}
+  <button class="button">
+    {{ text }}
   </button>
 </template>
 
@@ -11,23 +11,6 @@ export default {
     text: {
       type: String,
       required: true,
-    },
-    hoverText: {
-      type: String,
-      required: false,
-    },
-  },
-  data() {
-    return {
-      currentText: this.text,
-    };
-  },
-  methods: {
-    onMouseEnter() {
-      this.currentText = this.hoverText;
-    },
-    onMouseLeave() {
-      this.currentText = this.text;
     },
   },
 };

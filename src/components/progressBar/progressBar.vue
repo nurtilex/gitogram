@@ -57,6 +57,6 @@ export default {
   width: 0;
   background-color: #31ae54;
   border-radius: 5px;
-  transition: 5s;
+  transition: 10s ease;
 }
 </style>
