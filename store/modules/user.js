@@ -57,7 +57,7 @@ export default {
     async likeRepo(store, { owner, repo }) {
       try {
         const { status } = await likeRepo({ owner, repo });
-        console.log(status)
+        console.log(status);
         await store.actions.fetchRepos();
       } catch (e) {
         console.log(e);
