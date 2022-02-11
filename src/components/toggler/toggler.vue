@@ -1,9 +1,11 @@
 <template>
   <button type="button" class="toggler" @click="toggleValue">
     <span class="button_text">{{ currentText }}</span>
-    <span :class="['button__icon', { active: isOpened }]">
-      <img src="../../assets/arrow-icon.svg" alt="arrow" />
-    </span>
+    <img
+      src="../../assets/arrow-icon.svg"
+      alt="arrow"
+      :class="['arrow', { active: isOpened }]"
+    />
   </button>
 </template>
 <script>
@@ -38,6 +40,10 @@ export default {
   border: none;
   background: none;
   cursor: pointer;
+}
+.arrow {
+  width: 10px;
+  height: 10px;
 }
 .active {
   transform: rotate(180deg);

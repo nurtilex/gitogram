@@ -10,7 +10,6 @@ export default {
   mutations: {
     updateCurrentSlide(state, payload) {
       state.currentSlide = payload;
-      console.log('store updated');
     },
     setReadme(state, payload) {
       state.data = state.data.map((repo) => {
@@ -24,7 +23,6 @@ export default {
   },
   getters: {
     getRepoById: (state) => (id) => {
-      console.log(id)
       return state.data.find((item) => item.id === id);
     },
   },

@@ -31,7 +31,11 @@
     </div>
     <div class="footer">
       <div class="button">
-        <xButton text="Follow" hoverText="Unfollow" />
+        <xButton
+          text="Follow"
+          hoverText="Unfollow"
+          @click="handleButtonClick"
+        />
       </div>
     </div>
     <div
@@ -48,6 +52,8 @@ import progressBar from '../progressBar/progressBar.vue';
 import spinner from '../spinner/spinner.vue';
 import xButton from '../button/button.vue';
 import sliderPlaceholder from '../sliderPlaceholder/sliderPlaceholder.vue';
+
+import { mapActions } from 'vuex';
 
 export default {
   name: 'sliderItem',
@@ -68,8 +74,17 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      likeRepo: 'user/likeRepo',
+    }),
     moveSlide(direction) {
       this.$emit('moveSlide', direction);
+    },
+    handleButtonClick() {
+      this.likeRepo({
+        owner: this.$props.data.login,
+        repo: this.$props.data.title,
+      });
     },
   },
   computed: {

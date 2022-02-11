@@ -8,12 +8,18 @@
     <toggler @onToggle="toggle" />
     <!-- // Блок с комментариями -->
     <div class="post__comments" v-if="shown">
-      <comment
-        v-for="comment in data.comments"
-        :key="comment.id"
-        :author="comment.login"
-        :body="comment.body"
-      />
+      <div class="loading" v-if="isLoading">
+        <spinner />
+      </div>
+
+      <div class="comments" v-else-if="!isLoading">
+        <comment
+          v-for="comment in getIssuesOfRepo({ id: data.id })"
+          :key="comment.id"
+          :author="comment.login"
+          :body="comment.title"
+        />
+      </div>
     </div>
     <!-- // Блок с датой  -->
     <div class="post__date">{{ data.date }}</div>
@@ -24,6 +30,9 @@
 import comment from '../comment/comment.vue';
 import userButton from '../userButton/userButton.vue';
 import toggler from '../toggler/toggler.vue';
+import spinner from '../spinner/spinner.vue';
+
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'post',
@@ -31,19 +40,38 @@ export default {
     comment,
     userButton,
     toggler,
+    spinner,
   },
   props: {
     data: Object,
   },
   data() {
     return {
+      isLoading: false,
       shown: false,
     };
   },
   methods: {
-    toggle(isOpened) {
-      this.shown = isOpened;
+    async toggle(isOpened) {
+      try {
+        this.isLoading = true;
+        const { login: owner, title: repo, id } = this.data;
+        await this.fetchIssues({ owner, repo, id });
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.shown = isOpened;
+        this.isLoading = false
+      }
     },
+    ...mapActions({
+      fetchIssues: 'user/fetchIssues',
+    }),
+  },
+  computed: {
+    ...mapGetters({
+      getIssuesOfRepo: 'user/getIssuesOfRepo',
+    }),
   },
 };
 </script>
@@ -55,6 +83,13 @@ export default {
   gap: 1.5rem;
   width: 70%;
   height: auto;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 10rem;
 }
 
 .post__comments {

@@ -2,7 +2,7 @@
   <div class="feed">
     <topline>
       <template #headline>
-        <headline />
+        <headline :avatar_url="user.avatar_url" />
       </template>
 
       <template #content>
@@ -18,11 +18,7 @@
       </template>
     </topline>
     <section class="main">
-      <post
-        v-for="item in formateObjects(trendings)"
-        :key="item.id"
-        :data="item"
-      >
+      <post v-for="item in formateObjects(repos)" :key="item.id" :data="item">
         <template #default>
           <articlePreview :data="item" />
         </template>
@@ -37,13 +33,19 @@ import post from '../../components/post/post.vue';
 import articlePreview from '../../components/articlePreview/articlePreview.vue';
 import storyItem from '../../components/storyItem/storyItem.vue';
 
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions,  } from 'vuex';
+import formateDate from '../../helper/formateDate';
 
 export default {
   name: 'feeds',
   components: { headline, topline, storyItem, post, articlePreview },
   methods: {
-    ...mapActions({ fetchTrendings: 'trendings/fetchTrendings' }),
+    ...mapActions({
+      fetchTrendings: 'trendings/fetchTrendings',
+      fetchUser: 'user/fetchUser',
+      fetchRepos: 'user/fetchRepos',
+      fetchIssues: 'user/fetchIssues',
+    }),
     formateObjects(arr) {
       return arr.map((item) => ({
         id: item.id,
@@ -51,7 +53,7 @@ export default {
         title: item.name,
         avatarURL: item.owner.avatar_url,
         starsCount: item.stargazers_count,
-        forksCount: item.watchers_count,
+        forksCount: item.forks_count,
         description: item.description,
         comments: [
           {
@@ -76,17 +78,22 @@ export default {
           'In Preview 4 we enable push/pop navigation with NavigationPage. We added a concrete implementation of IWindow, and completed porting ContentPage from Xamarin.Forms',
           `For running on Mac you'll currently use your favorite text editor and terminal to edit and run apps. We expect Visual Studio for Mac .NET 6 support to begin arriving mid-year.`,
         ],
-        date: '15 MAY',
+        date: formateDate(item.created_at),
       }));
     },
   },
   computed: {
     ...mapState({
       trendings: (state) => state.trendings.data,
+      user: (state) => state.user.user,
+      repos: (state) => state.user.repos,
     }),
+    
   },
   async created() {
     await this.fetchTrendings();
+    await this.fetchUser();
+    await this.fetchRepos();
   },
 };
 </script>

@@ -30,7 +30,7 @@ export default {
   gap: 0.5rem;
   color: #000;
   text-decoration: none;
-  width: 10rem;
+  width: 100%;
 }
 
 .post-author__icon {

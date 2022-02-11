@@ -17,7 +17,6 @@ export default {
   methods: {
     emitOnFinish() {
       this.$emit('onFinish', 1);
-      console.log('onFinishEmit');
     },
   },
   mounted() {

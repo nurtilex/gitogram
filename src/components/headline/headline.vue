@@ -11,9 +11,9 @@
       </a>
       <a href="#">
         <img
-          src="../../assets/user-andrew.svg"
+          :src="avatar_url"
           alt="some user"
-          class="list-item__img"
+          class="list-item__img user-img"
         />
       </a>
       <a href="#">
@@ -33,6 +33,12 @@ export default {
   name: 'headline',
   components: {
     logo,
+  },
+  props: {
+    avatar_url: {
+      type: String,
+      required: true,
+    },
   },
 };
 </script>
@@ -58,5 +64,11 @@ export default {
 .list-item__img {
   width: 30px;
   height: 30px;
+  overflow: hidden;
+}
+.user-img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
 }
 </style>

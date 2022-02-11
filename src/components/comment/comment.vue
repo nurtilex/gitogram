@@ -1,7 +1,7 @@
 <template>
   <div class="comment">
     <span class="author">{{ author }}</span>
-    <span class="body">{{ body }}</span>
+    <span class="body">{{ body}}</span>
   </div>
 </template>
 
@@ -26,14 +26,25 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 0.8rem;
+  /* gap: 0.2rem; */
   width: 100%;
-  height: 1.8rem;
+  min-height: 2.2rem;
 }
 .author {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 25%;
+  height: 100%;
   font-weight: bold;
 }
 .body {
-    text-align: left;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 75%;
+  height: 100%;
+  text-align: left;
+  overflow-x: hidden;
 }
 </style>
