@@ -20,7 +20,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  height: 14rem;
+  /* height: 14rem; */
   background-color: #FAFAFA;
   border-bottom: 1.5px solid #9E9E9E;
   box-shadow: 0px 0.33px 0px rgba(60, 60, 67, 0.29);

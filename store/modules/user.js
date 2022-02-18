@@ -3,12 +3,14 @@ import { getRepos } from '../../src/api/rest/repos';
 import { getIssues } from '../../src/api/rest/issues';
 import { likeRepo } from '../../src/api/rest/likeRepo';
 import { dislikeRepo } from '../../src/api/rest/dislikeRepo';
+import { myRepos } from '../../src/api/rest/myRepos';
 
 export default {
   namespaced: true,
   state: {
     user: [],
     repos: [],
+    following: []
   },
   mutations: {},
   getters: {
@@ -25,6 +27,7 @@ export default {
       try {
         const { data } = await getUser();
         store.state.user = data;
+        console.log(data);
       } catch (e) {
         console.log(e);
       }
@@ -32,7 +35,17 @@ export default {
     async fetchRepos(store) {
       try {
         const { data } = await getRepos();
+        console.log('fetchRepos',data)
         store.state.repos = data;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async fetchReposOfUser(store) {
+      try {
+        const { data } = await myRepos({ owner: store.state.user.login });
+        store.state.user.public_repos_list = data;
+        console.log(data)
       } catch (e) {
         console.log(e);
       }

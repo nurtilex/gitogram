@@ -107,6 +107,10 @@ export default {
   margin-bottom: 5rem;
 }
 
+.c-topline {
+  height: 14rem;
+}
+
 .icon {
   width: 60px;
   height: 60px;

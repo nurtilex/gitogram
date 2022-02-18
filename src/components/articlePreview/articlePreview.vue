@@ -28,10 +28,10 @@ export default {
   justify-content: space-around;
   padding: 1rem 1.5rem;
   width: 100%;
-  height: 14rem;
+  min-height: 14rem;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.07);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.07);
   cursor: pointer;
 }
 

@@ -9,13 +9,14 @@
           class="list-item__img"
         />
       </a>
-      <a href="#">
+      <router-link to="/profile">
         <img
           :src="avatar_url"
           alt="some user"
           class="list-item__img user-img"
         />
-      </a>
+      </router-link>
+      
       <a href="#">
         <img
           src="../../assets/sign-out.svg"
