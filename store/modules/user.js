@@ -35,6 +35,7 @@ export default {
       try {
         const { data } = await getRepos();
         store.state.repos = data;
+        console.log(data)
       } catch (e) {
         console.log(e);
       }

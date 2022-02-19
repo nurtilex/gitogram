@@ -1,6 +1,6 @@
 <template>
   <button type="button" class="toggler" @click="toggleValue">
-    <span class="button_text">{{ currentText }}</span>
+    <span class="button_text">{{ isOpened ? 'Hide issues' : 'View issues' }}</span>
     <img
       src="../../assets/arrow-icon.svg"
       alt="arrow"
@@ -11,6 +11,7 @@
 <script>
 export default {
   name: 'toggler',
+  emits: ['onToggle'],
   data() {
     return {
       isOpened: false,
@@ -20,11 +21,6 @@ export default {
     toggleValue() {
       this.isOpened = !this.isOpened;
       this.$emit('onToggle', this.isOpened);
-    },
-  },
-  computed: {
-    currentText() {
-      return this.isOpened ? 'Hide issues' : 'View issues';
     },
   },
 };
