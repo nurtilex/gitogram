@@ -27,7 +27,6 @@ export default {
       try {
         const { data } = await getUser();
         store.state.user = data;
-        console.log(data);
       } catch (e) {
         console.log(e);
       }
@@ -35,7 +34,6 @@ export default {
     async fetchRepos(store) {
       try {
         const { data } = await getRepos();
-        console.log('fetchRepos',data)
         store.state.repos = data;
       } catch (e) {
         console.log(e);
@@ -45,7 +43,6 @@ export default {
       try {
         const { data } = await myRepos({ owner: store.state.user.login });
         store.state.user.public_repos_list = data;
-        console.log(data)
       } catch (e) {
         console.log(e);
       }

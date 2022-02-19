@@ -32,7 +32,7 @@
           <div class="content__counter">{{ currentCounter }}</div>
         </div>
         <div class="content__list">
-          <div class="users" v-if="current === 'following'">
+          <div class="users" v-if="current.text === 'following'">
             <user
               v-for="repo in formateUsers(repos)"
               :key="repo.id"
@@ -40,7 +40,7 @@
               @unfollow="handleEmit"
             />
           </div>
-          <div class="repos" v-else-if="current === 'repos'">
+          <div class="repos" v-else-if="current.text === 'repos'">
             <article-preview
               v-for="repo in formateRepos(user.public_repos_list)"
               :key="repo.id"
@@ -59,103 +59,105 @@ import headline from '../../components/headline/headline.vue';
 import articlePreview from '../../components/articlePreview/articlePreview.vue';
 import user from '../../components/user/user.vue';
 
-import { mapState, mapActions } from 'vuex';
-// import { ref, useStore, computed } from 'vue';
+import { useStore } from 'vuex';
+import { reactive, computed } from 'vue';
 
 export default {
   name: 'profile',
   components: { topline, headline, user, articlePreview },
-  // setup() {
-  //   const store = useStore();
+  setup() {
+    const store = useStore();
+    console.log(store)
 
-  //   const current = ref('repos');
-  //   return {
-  //     current,
-  //     fetchUser: () => store.user.dispatch('fetchUser'),
-  //     fetchReposOfUser: () => store.user.dispatch('fetchReposOfUser'),
-  //     fetchRepos: () => store.user.dispatch('fetchRepos'),
-  //     unfollow: () => store.user.dispatch('dislikeRepo'),
-  //     formateRepos: (arr) => {
-  //       return arr.map((item) => ({
-  //         id: item.id,
-  //         title: item.name,
-  //         starsCount: item.stargazers_count,
-  //         forksCount: item.forks_count,
-  //         description: item.description,
-  //       }));
-  //     },
-  //     formateUsers: (arr) => {
-  //       return arr.map((item) => ({
-  //         id: item.id,
-  //         login: item.owner.login,
-  //         name: item.name,
-  //         avatar_url: item.owner.avatar_url,
-  //       }));
-  //     },
-  //     toggleCurrent: (text) => {
-  //       current.value = text;
-  //     },
-  //     handleEmit: ({ owner, repo }) => {
-  //       unfollow({ owner, repo });
-  //     },
-  //     user: computed(() => store.user.state.user),
-  //     repos: computed(() => store.user.state.repos),
-  //     currentTitle: computed(() => {
-  //       return this.current === 'repos' ? 'Repositories' : 'Following';
-  //     }),
-  //     currentCounter: computed(() => {
-  //       return this.current === 'repos'
-  //         ? this.user.public_repos
-  //         : this.repos.length;
-  //     }),
-  //   };
+    const current = reactive({text: 'repos'});
+    return {
+      current,
+      fetchUser: () => store.dispatch('user/fetchUser'),
+      fetchReposOfUser: () => store.dispatch('user/fetchReposOfUser'),
+      fetchRepos: () => store.dispatch('user/fetchRepos'),
+      unfollow: () => store.dispatch('user/dislikeRepo'),
+      formateRepos: (arr) => {
+        return arr.map((item) => ({
+          id: item.id,
+          title: item.name,
+          starsCount: item.stargazers_count,
+          forksCount: item.forks_count,
+          description: item.description,
+        }));
+      },
+      formateUsers: (arr) => {
+        return arr.map((item) => ({
+          id: item.id,
+          login: item.owner.login,
+          name: item.name,
+          avatar_url: item.owner.avatar_url,
+        }));
+      },
+      toggleCurrent: (text) => {
+        current.text = text;
+        console.log(current.text)
+      },
+      handleEmit: ({ owner, repo }) => {
+        this.unfollow({ owner, repo });
+      },
+      user: computed(() => store.state.user.user),
+      repos: computed(() => store.state.user.repos),
+      currentTitle: computed(() => {
+        return current?.text === 'repos' ? 'Repositories' : 'Following';
+      }),
+      currentCounter: computed(function() {
+        return current?.text === 'repos'
+          ? store.state.user.user.public_repos
+          : store.state.user.repos.length;
+      }),
+    };
+  },
+
+  // methods: {
+  //   ...mapActions({
+  //     fetchUser: 'user/fetchUser',
+  //     fetchReposOfUser: 'user/fetchReposOfUser',
+  //     fetchRepos: 'user/fetchRepos',
+  //     unfollow: 'user/dislikeRepo',
+  //   }),
+  //   formateRepos(arr) {
+  //     return arr.map((item) => ({
+  //       id: item.id,
+  //       title: item.name,
+  //       starsCount: item.stargazers_count,
+  //       forksCount: item.forks_count,
+  //       description: item.description,
+  //     }));
+  //   },
+  //   formateUsers(arr) {
+  //     return arr.map((item) => ({
+  //       id: item.id,
+  //       login: item.owner.login,
+  //       name: item.name,
+  //       avatar_url: item.owner.avatar_url,
+  //     }));
+  //   },
+  //   toggleCurrent(text) {
+  //     this.current = text;
+  //   },
+  //   handleEmit({ owner, repo }) {
+  //     this.unfollow({ owner, repo });
+  //   },
   // },
-
-  methods: {
-    ...mapActions({
-      fetchUser: 'user/fetchUser',
-      fetchReposOfUser: 'user/fetchReposOfUser',
-      fetchRepos: 'user/fetchRepos',
-      unfollow: 'user/dislikeRepo',
-    }),
-    formateRepos(arr) {
-      return arr.map((item) => ({
-        id: item.id,
-        title: item.name,
-        starsCount: item.stargazers_count,
-        forksCount: item.forks_count,
-        description: item.description,
-      }));
-    },
-    formateUsers(arr) {
-      return arr.map((item) => ({
-        id: item.id,
-        login: item.owner.login,
-        name: item.name,
-        avatar_url: item.owner.avatar_url,
-      }));
-    },
-    toggleCurrent(text) {
-      this.current = text;
-    },
-    handleEmit({ owner, repo }) {
-      this.unfollow({ owner, repo });
-    },
-  },
-  computed: {
-    ...mapState({
-      user: (state) => state.user.user,
-      repos: (state) => state.user.repos,
-    }),
-    currentTitle() {
-      return this.current === 'repos' ? 'Repositories' : 'Following';
-    },
-    currentCounter() {
-      return this.current === 'repos'
-        ? this.user.public_repos
-        : this.repos.length;
-    },
-  },
+  // computed: {
+  //   ...mapState({
+  //     user: (state) => state.user.user,
+  //     repos: (state) => state.user.repos,
+  //   }),
+  //   currentTitle() {
+  //     return this.current === 'repos' ? 'Repositories' : 'Following';
+  //   },
+  //   currentCounter() {
+  //     return this.current === 'repos'
+  //       ? this.user.public_repos
+  //       : this.repos.length;
+  //   },
+  // },
   async created() {
     await this.fetchUser();
     await this.fetchRepos();
